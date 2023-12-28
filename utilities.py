@@ -1,0 +1,92 @@
+import datetime
+import nextcord
+from nextcord.ext import menus
+
+
+def days_hours_minutes(seconds):
+    """Converts seconds to days, hours, minutes.
+
+    Args:
+        seconds (int): Seconds to convert.
+
+    Returns:
+        str: Time string in the format of "7 days, 3 hours, 51 minutes".
+    """
+    if not isinstance(seconds, int):
+        raise TypeError("Seconds must be an integer.")
+
+    if seconds < 0:
+        raise ValueError("Seconds must be non-negative.")
+
+    days, seconds = divmod(seconds, 86400)
+    hours, seconds = divmod(seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+
+    day_text = "day" if days == 1 else "days"
+    hour_text = "hour" if hours == 1 else "hours"
+    minute_text = "minute" if minutes == 1 else "minutes"
+
+    parts = []
+    if days > 0:
+        parts.append(f"{days} {day_text}")
+    if hours > 0:
+        parts.append(f"{hours} {hour_text}")
+    if minutes > 0:
+        parts.append(f"{minutes} {minute_text}")
+
+    if len(parts) == 0:
+        return "0 minutes"
+    else:
+        return ", ".join(parts)
+
+
+class NoStopButtonMenuPages(menus.ButtonMenuPages, inherit_buttons=False):
+    def __init__(self, source, timeout=60) -> None:
+        super().__init__(source, timeout=timeout)
+
+        # Add the buttons we want
+        self.add_item(menus.MenuPaginationButton(emoji=self.PREVIOUS_PAGE))
+        self.add_item(menus.MenuPaginationButton(emoji=self.NEXT_PAGE))
+
+        # Disable buttons that are unavailable to be pressed at the start
+        self._disable_unavailable_buttons()
+
+
+# taken from nextcord docs - to be revised
+class MyEmbedDescriptionPageSource(menus.ListPageSource):
+    def __init__(self, data):
+        super().__init__(data, per_page=2)
+
+    async def format_page(self, menu, entries):
+        embed = nextcord.Embed(
+            title="Recently Added", description="\n".join(entries), color=0xE5A00D
+        )
+        embed.set_footer(text=f"Page {menu.current_page + 1}/{self.get_max_pages()}")
+        return embed
+
+
+import subprocess
+
+
+def get_git_revision_short_hash() -> str:
+    return (
+        subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+        .decode("ascii")
+        .strip()
+    )
+
+
+def get_git_revision_short_hash_latest():
+    return (
+        subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+        .decode("ascii")
+        .strip()
+    )
+
+
+import json
+
+
+def reload_config_json():
+    with open("config.json", "r") as f:
+        return json.load(f)
