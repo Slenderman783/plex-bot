@@ -1,0 +1,15 @@
+{
+    "tautulli_ip": "192.168.0.99:30047",
+    "tautulli_apikey": "0a3d2d7d0f6248e1b6399a9e362f026e",
+    "token": "MTAxODYwODY1NzM3NTY5NDkxOQ.GZfTCA.TfXao6JND1XP373HfkGXzRMj6da7Ug-Wka1zg"o,
+    "tmdb_apikey": "847803d90ece3f3243d414fa7586b1da",
+    "server_id": 979933787582525463,
+    "plex_top": 1018612294223151125,
+    "plex_two": 1018612687430750250,
+    "plex_three": 1018612813717049446,
+    "qbit_ip": "192.168.0.99",
+    "qbit_port": "10095",
+    "qbit_username": "Slenderman783",
+    "qbit_password": "Gorhamm001",
+    "default_duration": 999
+}
